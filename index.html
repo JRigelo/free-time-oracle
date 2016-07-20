@@ -109,14 +109,16 @@
 
         <div id="game-image-container">
 
-          <div class="col-md-4 col-sm-6 col-xs-12 hidden" style="text-align: center" id="game-image-base">
-            <h4>
-              Rating: <button type="button" class="btn btn-danger btn-xs button-bad">bad</button>
-                      <button type="button" class="btn btn-primary btn-xs button-good">good</button>
-            </h4>
-            <p>
-              <img src="" class="img-responsive game-image" style="margin: 0 auto">
-            </p>
+          <div class="col-sm-4 col-xs-6 hidden" style="text-align: center" id="game-image-base">
+            <div class="game-image-inner" style="padding: 15px; margin: 15px">
+              <h4>
+                Rating: <button type="button" class="btn btn-danger btn-xs button-bad">bad</button>
+                        <button type="button" class="btn btn-primary btn-xs button-good">good</button>
+              </h4>
+              <p>
+                <img src="" class="img-responsive game-image" style="margin: 0 auto">
+              </p>
+            </div>
           </div>
 
         </div>
@@ -185,6 +187,9 @@
         });
     });
 
+    // State to hold the game preference selection stuff.
+    GAME_PREFS = {};
+
     // Populate the game section when the page loads.
     $(function() {
       $.getJSON(GAME_SAMPLES_ENDPOINT_URL, function(data) {
@@ -202,17 +207,25 @@
           var $button_bad = $clone.find('.button-bad');
           var $button_good = $clone.find('.button-good');
 
-          $button_bad.on('click', (function(res_id) {
+          $button_bad.on('click', (function(res_id, $clone) {
             return function() {
-              alert('bad button ' + res_id);
+              GAME_PREFS[res_id] = false;
+              console.log('dislike ' + res_id);
+              $inner = $clone.find('.game-image-inner');
+              $inner.removeClass('game-good game-bad');
+              $inner.addClass('game-bad');
             };
-          })(res_id));
+          })(res_id, $clone));
 
-          $button_good.on('click', (function(res_id) {
+          $button_good.on('click', (function(res_id, $clone) {
             return function() {
-              alert('good button ' + res_id);
+              GAME_PREFS[res_id] = true;
+              console.log('LIKE ' + res_id);
+              $inner = $clone.find('.game-image-inner');
+              $inner.removeClass('game-good game-bad');
+              $inner.addClass('game-good');
             };
-          })(res_id));
+          })(res_id, $clone));
 
           var $image = $clone.find('.game-image');
           $image.attr("src", res_img_url);
@@ -220,6 +233,13 @@
           $clone.removeClass('hidden');
           $container.append($clone);
         }
+      });
+    });
+
+    // Handle the final 'MAKE RECOMMENDATIONS' button.
+    $(function() {
+      $('#button-games-done').on('click', function() {
+        alert(JSON.stringify(GAME_PREFS));
       });
     });
 

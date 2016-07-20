@@ -77,3 +77,15 @@ body {
     border-bottom: 0;
   }
 }
+
+.game-good {
+  border-width: 5px;
+  border-style: solid;
+  border-color:rgba(0,0,255,0.5);
+}
+
+.game-bad {
+  border-width: 5px;
+  border-style: solid;
+  border-color:rgba(255,0,0,0.5);
+}
