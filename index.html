@@ -26,10 +26,14 @@
     <!-- CSS Spinners; see: http://www.css-spinners.com/ -->
     <link rel="stylesheet" href="./static/deps/css-spinners/css/spinners.css">
 
+    <!-- JQuery UI -->
+    <link rel="stylesheet" href="./static/deps/jquery-ui/jquery-ui-1.12.0.custom/jquery-ui.min.css">
+
     <!-- Custom styles for this website -->
     <link href="./static/deps/css_custom/my.css" rel="stylesheet">
 
     <script>
+      AUTOCOMPLETE_ENDPOINT_URL = "http://54.205.134.217:5000/mock/autocomplete";
       GAME_SAMPLES_ENDPOINT_URL = "http://54.205.134.217:5000/mock/games_samples";
       MAKE_REC_ENDPOINT_URL = "http://54.205.134.217:5000/mock/make_recommendation";
     </script>
@@ -63,15 +67,15 @@
 
           <div class="form-group">
             <label for="movie_pos_1">A movie you <span class="text-primary">love</span>:</label>
-            <input type="text" class="form-control" id="movie_pos_1" placeholder="">
+            <input type="text" class="form-control movie_input" id="movie_pos_1" placeholder="">
           </div>
           <div class="form-group">
             <label for="movie_pos_2">A movie you <span class="text-primary">love</span>:</label>
-            <input type="text" class="form-control" id="movie_pos_2" placeholder="">
+            <input type="text" class="form-control movie_input" id="movie_pos_2" placeholder="">
           </div>
           <div class="form-group">
             <label for="movie_pos_3">A movie you <span class="text-primary">love</span>:</label>
-            <input type="text" class="form-control" id="movie_pos_3" placeholder="">
+            <input type="text" class="form-control movie_input" id="movie_pos_3" placeholder="">
           </div>
 
         </div>
@@ -80,15 +84,15 @@
 
           <div class="form-group">
             <label for="movie_neg_1">A movie you <span class="text-danger">hate</span>:</label>
-            <input type="text" class="form-control" id="movie_neg_1" placeholder="">
+            <input type="text" class="form-control movie_input" id="movie_neg_1" placeholder="">
           </div>
           <div class="form-group">
             <label for="movie_neg_2">A movie you <span class="text-danger">hate</span>:</label>
-            <input type="text" class="form-control" id="movie_neg_2" placeholder="">
+            <input type="text" class="form-control movie_input" id="movie_neg_2" placeholder="">
           </div>
           <div class="form-group">
             <label for="movie_neg_3">A movie you <span class="text-danger">hate</span>:</label>
-            <input type="text" class="form-control" id="movie_neg_3" placeholder="">
+            <input type="text" class="form-control movie_input" id="movie_neg_3" placeholder="">
           </div>
 
         </div>
@@ -163,6 +167,9 @@
     <script src="./static/deps/jquery/jquery-2.1.4.min.js"></script>
     <script src="./static/deps/jquery/jquery.easing.1.3.js"></script>
 
+    <!-- JQuery UI -->
+    <script src="./static/deps/jquery-ui/jquery-ui-1.12.0.custom/jquery-ui.min.js"></script>
+
     <!-- Bootstrap core JavaScript -->
     <script src="./static/deps/bootstrap/js/bootstrap.min.js"></script>
     <script>
@@ -199,6 +206,34 @@
           $('#movie-section').removeClass('hidden');
           scroll_to_object($('#movie-section'));
         });
+    });
+
+    // State to hold the game preference selection stuff.
+    MOVIE_IDS = {};
+
+    // Do autocomplete stuff.
+    $(function() {
+     $('.movie_input').each(function() {
+        $(this).autocomplete({
+            source: function (request, response) {
+                $.getJSON(AUTOCOMPLETE_ENDPOINT_URL, {
+                  q: request.term
+                }, function (data) {
+                  var res = data.results;
+                  console.log(JSON.stringify(res));
+                  var show = [];
+                  for (var i = 0; i < res.length; i++) {
+                    var name = res[i][0];
+                    var id = res[i][1];
+                    show.push(name);
+                    MOVIE_IDS[name] = id;
+                  }
+                  response(show);
+                });
+            },
+            minLength: 1
+        });
+     });
     });
 
     // Handle when the 'Next' button is clicked (after user enters movie preferences).
