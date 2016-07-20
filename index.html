@@ -7,20 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- More metadata -->
-    <meta name="description" content="A movie-game recommender!">
+    <meta name="description" content="Free-time Oracle">
     <meta name="author" content="Joyce!">
 
     <!-- The favicon! -->
-    <!-- <link rel="icon" href="/static/favicon.png"> -->
+    <!-- <link rel="icon" href="./static/favicon.png"> -->
 
     <!-- The page title -->
-    <title>A movie-game recommender!</title>
+    <title>Free-time Oracle</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/static/deps/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./static/deps/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this website -->
-    <link href="/static/deps/css_custom/my.css" rel="stylesheet">
+    <link href="./static/deps/css_custom/my.css" rel="stylesheet">
   </head>
 
   <body>
@@ -34,17 +34,57 @@
             <li role="presentation"><a href="#">Contact</a></li>
           </ul>
         </nav>
-        <h3 class="text-muted">Project name</h3>
+        <h3 class="text-muted">Free-time Oracle</h3>
       </div>
 
       <div class="jumbotron">
-        <h1>Jumbotron heading</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up today</a></p>
+        <h1>Free-time Oracle</h1>
+        <p class="lead">Need to waste some time? Get video game and movie recommendations!</p>
+        <p><a class="btn btn-lg btn-success" href="#" role="button">Begin</a></p>
       </div>
 
       <div class="row marketing">
-        <div class="col-lg-6">
+
+        <div class="col-sm-6 col-xs-12">
+
+          <div class="form-group">
+            <label for="movie_pos_1">A movie you like:</label>
+            <input type="text" class="form-control" id="movie_pos_1" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="movie_pos_2">A movie you like:</label>
+            <input type="text" class="form-control" id="movie_pos_2" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="movie_pos_3">A movie you like:</label>
+            <input type="text" class="form-control" id="movie_pos_3" placeholder="">
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+
+        </div>
+
+        <div class="col-sm-6 col-xs-12">
+
+          <div class="form-group">
+            <label for="movie_neg_1">A movie you hate:</label>
+            <input type="text" class="form-control" id="movie_neg_1" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="movie_neg_2">A movie you hate:</label>
+            <input type="text" class="form-control" id="movie_neg_2" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="movie_neg_3">A movie you hate:</label>
+            <input type="text" class="form-control" id="movie_neg_3" placeholder="">
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+
+        </div>
+
+      </div>
+
+      <div class="row marketing hidden">
+        <div class="col-xs-12">
           <h4>Subheading</h4>
           <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
 
@@ -55,7 +95,7 @@
           <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-xs-12">
           <h4>Subheading</h4>
           <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
 
