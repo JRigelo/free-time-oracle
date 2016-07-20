@@ -31,6 +31,7 @@
 
     <script>
       GAME_SAMPLES_ENDPOINT_URL = "http://54.205.134.217:5000/mock/games_samples";
+      MAKE_REC_ENDPOINT_URL = "http://54.205.134.217:5000/mock/make_recommendation";
     </script>
   </head>
 
@@ -109,7 +110,7 @@
 
         <div id="game-image-container">
 
-          <div class="col-sm-4 col-xs-6 hidden" style="text-align: center" id="game-image-base">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 hidden" style="text-align: center" id="game-image-base">
             <div class="game-image-inner" style="padding: 15px; margin: 15px">
               <h4>
                 Rating: <button type="button" class="btn btn-danger btn-xs button-bad">bad</button>
@@ -127,6 +128,27 @@
           <p>
             <button type="button" class="btn btn-success btn-lg" autocomplete="off" id="button-games-done">Recommend Stuff!</button>
           </p>
+        </div>
+
+      </div>
+
+      <div class="row marketing hidden" id="recommendation-section">
+
+        <div class="col-xs-12" style="text-align: center">
+          <h3>Here are your recommendations!</h3>
+        </div>
+
+        <div id="recommendations-container">
+
+          <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 hidden" style="text-align: center" id="recommendation-base">
+            <h4>
+              <a href="#" class="rec-link" target="_blank">Buy on Amazon</a>
+            </h4>
+            <p>
+              <img src="" class="img-responsive rec-image" style="margin: 0 auto">
+            </p>
+          </div>
+
         </div>
 
       </div>
@@ -239,7 +261,43 @@
     // Handle the final 'MAKE RECOMMENDATIONS' button.
     $(function() {
       $('#button-games-done').on('click', function() {
-        alert(JSON.stringify(GAME_PREFS));
+        var positive_array = [];
+        var negative_array = [];
+        for (var key in GAME_PREFS) {
+          if (GAME_PREFS[key])
+            positive_array.push(key);
+          else
+            negative_array.push(key);
+        }
+
+        $.getJSON(MAKE_REC_ENDPOINT_URL,
+          {postive_ids: positive_array, negative_ids: negative_array},
+          function(data) {
+            var $container = $('#recommendations-container');
+            var $base = $('#recommendation-base');
+            var res = data.results;
+            for (var i = 0; i < res.length; i++)
+            {
+              var res_img_url = res[i][0];
+              var res_buy_url = res[i][1];
+              console.log(res_img_url + " -> " + res_buy_url);
+
+              var $clone = $base.clone();
+              $clone.prop('id', 'recommendation-' + i);
+
+              var $image = $clone.find('.rec-image');
+              $image.attr("src", res_img_url);
+
+              var $link = $clone.find('.rec-link');
+              $link.attr("href", res_buy_url);
+
+              $clone.removeClass('hidden');
+              $container.append($clone);
+            }
+
+            $('#recommendation-section').removeClass('hidden');
+            scroll_to_object($('#recommendation-section'));
+          });
       });
     });
 
