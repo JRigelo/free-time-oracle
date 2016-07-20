@@ -28,6 +28,10 @@
 
     <!-- Custom styles for this website -->
     <link href="./static/deps/css_custom/my.css" rel="stylesheet">
+
+    <script>
+      GAME_SAMPLES_ENDPOINT_URL = "http://54.205.134.217:5000/mock/games_samples";
+    </script>
   </head>
 
   <body>
@@ -96,6 +100,35 @@
 
       </div>
 
+      <div class="row marketing hidden" id="game-section">
+
+        <div class="col-xs-12" style="text-align: center">
+          <h3>Do you know any of these games?</h3>
+          <h5>(if yes, provide your feedback on a few of them)</h5>
+        </div>
+
+        <div id="game-image-container">
+
+          <div class="col-md-4 col-sm-6 col-xs-12 hidden" style="text-align: center" id="game-image-base">
+            <h4>
+              Rating: <button type="button" class="btn btn-danger btn-xs button-bad">bad</button>
+                      <button type="button" class="btn btn-primary btn-xs button-good">good</button>
+            </h4>
+            <p>
+              <img src="" class="img-responsive game-image" style="margin: 0 auto">
+            </p>
+          </div>
+
+        </div>
+
+        <div class="col-xs-12" style="text-align: center">
+          <p>
+            <button type="button" class="btn btn-success btn-lg" autocomplete="off" id="button-games-done">Recommend Stuff!</button>
+          </p>
+        </div>
+
+      </div>
+
       <footer class="footer">
         <p>&copy; 2016 Joyce!, Inc.</p>
       </footer>
@@ -135,12 +168,61 @@
 
     <!-- This page's custom JS -->
     <script>
-      $(function() {
-          $('#button-begin').on('click', function(){
-            $('#movie-section').removeClass('hidden');
-            scroll_to_object($('#movie-section'));
-          });
+
+    // Handle when the 'Begin' button is clicked.
+    $(function() {
+        $('#button-begin').on('click', function(){
+          $('#movie-section').removeClass('hidden');
+          scroll_to_object($('#movie-section'));
+        });
+    });
+
+    // Handle when the 'Next' button is clicked (after user enters movie preferences).
+    $(function() {
+        $('#button-movies-done').on('click', function(){
+          $('#game-section').removeClass('hidden');
+          scroll_to_object($('#game-section'));
+        });
+    });
+
+    // Populate the game section when the page loads.
+    $(function() {
+      $.getJSON(GAME_SAMPLES_ENDPOINT_URL, function(data) {
+        var $container = $('#game-image-container');
+        var $base = $('#game-image-base');
+        var res = data.results;
+        for (var i = 0; i < res.length; i++)
+        {
+          var res_img_url = res[i][0];
+          var res_id = res[i][1];
+
+          var $clone = $base.clone();
+          $clone.prop('id', 'game-image-' + i);
+
+          var $button_bad = $clone.find('.button-bad');
+          var $button_good = $clone.find('.button-good');
+
+          $button_bad.on('click', (function(res_id) {
+            return function() {
+              alert('bad button ' + res_id);
+            };
+          })(res_id));
+
+          $button_good.on('click', (function(res_id) {
+            return function() {
+              alert('good button ' + res_id);
+            };
+          })(res_id));
+
+          var $image = $clone.find('.game-image');
+          $image.attr("src", res_img_url);
+
+          $clone.removeClass('hidden');
+          $container.append($clone);
+        }
       });
+    });
+
     </script>
 
   </body>
