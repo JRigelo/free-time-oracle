@@ -47,10 +47,12 @@
       <div class="jumbotron">
         <h1>Free-time Oracle</h1>
         <p class="lead">Need to waste some time? Get video game and movie recommendations!</p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">Begin</a></p>
+        <p>
+          <button type="button" class="btn btn-success btn-lg" autocomplete="off" id="button-begin">Begin</button>
+        </p>
       </div>
 
-      <div class="row marketing">
+      <div class="row marketing hidden" id="movie-section">
 
         <div class="col-sm-6 col-xs-12" style="margin-bottom: 40px">
 
@@ -84,8 +86,12 @@
             <input type="text" class="form-control" id="movie_neg_3" placeholder="">
           </div>
 
-          <button type="submit" class="btn btn-default">Submit</button>
+        </div>
 
+        <div class="col-xs-12" style="text-align: center">
+          <p>
+            <button type="button" class="btn btn-info btn-lg" autocomplete="off" id="button-movies-done">Next</button>
+          </p>
         </div>
 
       </div>
@@ -126,6 +132,16 @@
 
     <!-- Javascript sprintf() -->
     <script src="./static/deps/sprintf/sprintf.min.js"></script>
+
+    <!-- This page's custom JS -->
+    <script>
+      $(function() {
+          $('#button-begin').on('click', function(){
+            $('#movie-section').removeClass('hidden');
+            scroll_to_object($('#movie-section'));
+          });
+      });
+    </script>
 
   </body>
 </html>
