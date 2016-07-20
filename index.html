@@ -67,15 +67,15 @@
 
           <div class="form-group">
             <label for="movie_pos_1">A movie you <span class="text-primary">love</span>:</label>
-            <input type="text" class="form-control movie_input" id="movie_pos_1" placeholder="">
+            <input type="text" class="form-control movie_input good_movie_input" id="movie_pos_1" placeholder="">
           </div>
           <div class="form-group">
             <label for="movie_pos_2">A movie you <span class="text-primary">love</span>:</label>
-            <input type="text" class="form-control movie_input" id="movie_pos_2" placeholder="">
+            <input type="text" class="form-control movie_input good_movie_input" id="movie_pos_2" placeholder="">
           </div>
           <div class="form-group">
             <label for="movie_pos_3">A movie you <span class="text-primary">love</span>:</label>
-            <input type="text" class="form-control movie_input" id="movie_pos_3" placeholder="">
+            <input type="text" class="form-control movie_input good_movie_input" id="movie_pos_3" placeholder="">
           </div>
 
         </div>
@@ -84,15 +84,15 @@
 
           <div class="form-group">
             <label for="movie_neg_1">A movie you <span class="text-danger">hate</span>:</label>
-            <input type="text" class="form-control movie_input" id="movie_neg_1" placeholder="">
+            <input type="text" class="form-control movie_input bad_movie_input" id="movie_neg_1" placeholder="">
           </div>
           <div class="form-group">
             <label for="movie_neg_2">A movie you <span class="text-danger">hate</span>:</label>
-            <input type="text" class="form-control movie_input" id="movie_neg_2" placeholder="">
+            <input type="text" class="form-control movie_input bad_movie_input" id="movie_neg_2" placeholder="">
           </div>
           <div class="form-group">
             <label for="movie_neg_3">A movie you <span class="text-danger">hate</span>:</label>
-            <input type="text" class="form-control movie_input" id="movie_neg_3" placeholder="">
+            <input type="text" class="form-control movie_input bad_movie_input" id="movie_neg_3" placeholder="">
           </div>
 
         </div>
@@ -220,7 +220,6 @@
                   q: request.term
                 }, function (data) {
                   var res = data.results;
-                  console.log(JSON.stringify(res));
                   var show = [];
                   for (var i = 0; i < res.length; i++) {
                     var name = res[i][0];
@@ -304,6 +303,17 @@
           else
             negative_array.push(key);
         }
+        $('.good_movie_input').each(function() {
+          val = $(this).val();
+          positive_array.push(MOVIE_IDS[val]);
+        });
+        $('.bad_movie_input').each(function() {
+          val = $(this).val();
+          negative_array.push(MOVIE_IDS[val]);
+        });
+
+        console.log('positive_array: ' + positive_array);
+        console.log('negative_array: ' + negative_array);
 
         $.getJSON(MAKE_REC_ENDPOINT_URL,
           {postive_ids: positive_array, negative_ids: negative_array},
@@ -315,7 +325,6 @@
             {
               var res_img_url = res[i][0];
               var res_buy_url = res[i][1];
-              console.log(res_img_url + " -> " + res_buy_url);
 
               var $clone = $base.clone();
               $clone.prop('id', 'recommendation-' + i);
