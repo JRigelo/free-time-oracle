@@ -316,7 +316,7 @@
         console.log('negative_array: ' + negative_array);
 
         $.getJSON(MAKE_REC_ENDPOINT_URL,
-          {postive_ids: positive_array, negative_ids: negative_array},
+          {postive_ids: positive_array.join(), negative_ids: negative_array.join()},
           function(data) {
             var $container = $('#recommendations-container');
             var $base = $('#recommendation-base');
